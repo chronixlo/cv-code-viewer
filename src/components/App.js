@@ -1,4 +1,9 @@
+import { useState } from "react";
+import DirectoryList from "./DirectoryList";
+
 function App() {
+  const [selectedFile, setSelectedFile] = useState();
+
   return (
     <div className="app">
       <div className="card" style={{ backgroundColor: "#70FFD319" }}>
@@ -6,11 +11,14 @@ function App() {
       </div>
 
       <div className="card" style={{ backgroundColor: "#70FFD319" }}>
-        directory
+        <DirectoryList
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
+        />
       </div>
 
       <div className="card" style={{ backgroundColor: "#70FFD319", flex: 2 }}>
-        source
+        {selectedFile?.name}
       </div>
     </div>
   );
