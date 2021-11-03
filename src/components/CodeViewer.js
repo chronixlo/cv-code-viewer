@@ -1,4 +1,7 @@
-import { useState } from "react";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
+
+const str = `import { useState } from "react";
 import Card from "./Card";
 import CodeViewer from "./CodeViewer";
 import DirectoryList from "./DirectoryList";
@@ -37,3 +40,27 @@ function App() {
 }
 
 export default App;
+`;
+
+export default function CodeViewer({ file }) {
+  const highlighted = Prism.highlight(
+    str,
+    Prism.languages.javascript,
+    "javascript"
+  );
+
+  if (!file) {
+    return "Select a file";
+  }
+
+  return (
+    <div>
+      <div>{file?.name}</div>
+
+      <div
+        dangerouslySetInnerHTML={{ __html: highlighted }}
+        className="code-viewer-source"
+      />
+    </div>
+  );
+}

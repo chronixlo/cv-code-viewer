@@ -61,6 +61,10 @@ body {
   flex: 1;
 }
 
+.code-viewer-source {
+  white-space: pre-wrap;
+}
+
 .icon-link {
   color: #fff;
   display: flex;
