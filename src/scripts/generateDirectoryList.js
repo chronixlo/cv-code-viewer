@@ -4,7 +4,7 @@ const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
 const writeFile = promisify(fs.writeFile);
 
-const BLACKLIST = ["node_modules", ".git"];
+const BLACKLIST = ["node_modules", ".git", "build"];
 
 (async () => {
   const dirlist = await readDir(".");
@@ -27,10 +27,15 @@ async function readDir(path) {
           const itemStat = await stat(filePath);
 
           if (itemStat.isDirectory()) {
-            return { name: file, dir: true, children: await readDir(filePath) };
+            return {
+              name: file,
+              dir: true,
+              path: filePath.slice(2),
+              children: await readDir(filePath),
+            };
           }
 
-          return { name: file, dir: false };
+          return { name: file, dir: false, path: filePath.slice(2) };
         } catch (e) {
           console.log(e);
           return "";

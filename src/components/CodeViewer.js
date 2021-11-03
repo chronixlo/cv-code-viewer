@@ -1,64 +1,52 @@
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
-
-const str = `import { useState } from "react";
-import Card from "./Card";
-import CodeViewer from "./CodeViewer";
-import DirectoryList from "./DirectoryList";
-
-function App() {
-  const [selectedFile, setSelectedFile] = useState();
-
-  return (
-    <div className="app">
-      <Card className="bio-card" title="Bio">
-        <div className="flex">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-          numquam obcaecati voluptatum in aliquam beatae sint aliquid assumenda.
-          Necessitatibus a atque, magnam dolorum officia labore. Magnam corporis
-          assumenda ad obcaecati.
-        </div>
-
-        <a className="icon-link" href="https://www.github.com/chronixlo">
-          <img src="github-light.png" alt="Github" />
-          @chronixlo
-        </a>
-      </Card>
-
-      <Card className="directory-list-card" title="Directory">
-        <DirectoryList
-          selectedFile={selectedFile}
-          setSelectedFile={setSelectedFile}
-        />
-      </Card>
-
-      <Card className="source-card" title="Source">
-        <CodeViewer file={selectedFile} />
-      </Card>
-    </div>
-  );
-}
-
-export default App;
-`;
+import { useEffect, useState } from "react";
 
 export default function CodeViewer({ file }) {
-  const highlighted = Prism.highlight(
-    str,
-    Prism.languages.javascript,
-    "javascript"
-  );
+  const [source, setSource] = useState();
+  const [loading, setLoading] = useState(false);
 
-  if (!file) {
+  useEffect(() => {
+    if (!file || file.dir) {
+      setSource(null);
+      return;
+    }
+
+    (async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(
+          `https://raw.githubusercontent.com/chronixlo/cv-code-viewer/master/${file.path}`
+        );
+
+        const text = await response.text();
+
+        const highlighted = Prism.highlight(
+          text,
+          Prism.languages.javascript,
+          "javascript"
+        );
+
+        setSource(highlighted);
+      } catch (e) {}
+
+      setLoading(false);
+    })();
+  }, [file]);
+
+  if (!file || file.dir) {
     return "Select a file";
   }
 
   return (
     <div>
-      <div>{file?.name}</div>
+      <div>
+        {file?.name} {loading && "..."}
+      </div>
 
       <div
-        dangerouslySetInnerHTML={{ __html: highlighted }}
+        dangerouslySetInnerHTML={{ __html: source }}
         className="code-viewer-source"
       />
     </div>
