@@ -9,6 +9,8 @@ export default function splash(callback) {
     callback();
 
     splash.classList.add("hide");
+
+    setTimeout(() => splash.parentElement.removeChild(splash), 1000);
   };
 
   const bg = document.createElement("img");
