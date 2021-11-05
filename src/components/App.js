@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 import CodeViewer from "./CodeViewer";
 import DirectoryList from "./DirectoryList";
+import Welcome from "./Welcome";
 
 function App() {
   const [selectedFile, setSelectedFile] = useState();
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setShowWelcome(false), 1000);
+  }, []);
+
+  if (showWelcome) {
+    return <Welcome />;
+  }
 
   return (
     <div className="app">

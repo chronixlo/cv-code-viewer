@@ -5,7 +5,7 @@ body {
     "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: center / cover no-repeat url("./bg.jpg");
+  background: center / cover no-repeat #222;
   height: 100vh;
   color: #fffd;
 }
@@ -14,10 +14,24 @@ body {
   height: 100%;
 }
 
+.display {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  margin: 0;
+  font-size: 80px;
+  text-transform: uppercase;
+}
+
+.welcome {
+  opacity: 0;
+  animation: fadein 1s ease, fadeout 1s ease 2s;
+}
+
 .app {
   height: 100%;
   background: #000a;
   display: flex;
+  animation: fadein 1s;
 }
 
 .card {
@@ -78,4 +92,24 @@ body {
 
 .icon-link img {
   margin-right: 8px;
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
